@@ -1108,5 +1108,20 @@
   "district": "NJ-09",
   "state": "NJ",
   "tags": ["social", "accessibility"]
+},
+{
+  "slug": "KY-02",
+  "name": "Advika Rastogi",
+  "appName": "WaterWise",
+  "description": "An interactive, AI-powered tool designed to provide farmers with irrigation guidance, helping them save water, improve crop yields, and adopt more sustainable agricultural practices.",
+  "thumbnail": "sites/KY-02/thumbnail.png",
+  "location": {
+    "lat": 38.2469,
+    "lng": -85.7664,
+    "label": "Louisville, KY"
+  },
+  "district": "KY-02",
+  "state": "KY",
+  "tags": ["environment", "accessibility"]
 }
 ]
