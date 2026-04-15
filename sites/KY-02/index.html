@@ -1,1 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WaterWise | Advika Rastogi</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    :root {
+      --sage:     #3d6b52;
+      --sage-lt:  #5a8a6e;
+      --teal:     #1a6b5c;
+      --mint:     #a7f3d0;
+      --foam:     #ecfdf5;
+      --cream:    #fafaf7;
+      --sand:     #f5f0e8;
+      --ink:      #1c2b1e;
+      --body:     #3a4f3e;
+      --muted:    #7a9480;
+      --border:   #d9e8dc;
+      --border-dk:#b8d4bf;
+      --white:    #ffffff;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    /* ── REVEAL ── */
+    .fade-up {
+      opacity: 0; transform: translateY(36px);
+      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+    }
+    .fade-up.on { opacity: 1; transform: translateY(0); }
+    .fade-left {
+      opacity: 0; transform: translateX(-36px);
+      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+    }
+    .fade-left.on { opacity: 1; transform: translateX(0); }
+    .fade-right {
+      opacity: 0; transform: translateX(36px);
+      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+    }
+    .fade-right.on { opacity: 1; transform: translateX(0); }
+    .d1 { transition-delay: 0.08s; }
+    .d2 { transition-delay: 0.17s; }
+    .d3 { transition-delay: 0.26s; }
+    .d4 { transition-delay: 0.35s; }
+    /* ── PROGRESS ── */
+    #prog {
+      position: fixed; top: 0; left: 0;
+      height: 2px; width: 0%;
+      background: linear-gradient(90deg, var(--teal), #4ade80);
+      z-index: 9999; pointer-events: none;
+    }
+    /* ══════════════════════════════════
+       HERO
+    ══════════════════════════════════ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: var(--sand);
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 120% 80% at 50% 110%, #b8d4bf 0%, transparent 55%),
+        radial-gradient(ellipse 80% 60% at 20% 80%, #c8dfc8 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 70%, #d4e8cc 0%, transparent 45%),
+        linear-gradient(170deg, #f5f0e8 0%, #e8ede0 40%, #d0dfc8 100%);
+    }
+    .hero-grain {
+      position: absolute; inset: 0; z-index: 1;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+    .hero-lines {
+      position: absolute; inset: 0; z-index: 1;
+      overflow: hidden;
+    }
+    .hero-lines svg {
+      position: absolute;
+      bottom: -10%; left: 0;
+      width: 100%; height: 60%;
+      opacity: 0.18;
+    }
+    .hero-inner {
+      position: relative; z-index: 2;
+      text-align: center;
+      padding: 7rem 2rem 5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .hero-district {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid var(--border-dk);
+      backdrop-filter: blur(8px);
+      border-radius: 100px;
+      padding: 0.4rem 1.1rem;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 2.2rem;
+    }
+    .hero-district::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--sage-lt);
+      border-radius: 50%;
+      animation: blink 2s ease infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(5rem, 16vw, 13rem);
+      font-weight: 300;
+      line-height: 0.88;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 0.25em;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--sage);
+    }
+    .hero-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--body);
+      line-height: 1.6;
+      max-width: 560px;
+      margin: 0 auto 3rem;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-dark {
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 0.85rem 2rem;
+      border-radius: 100px;
+      text-decoration: none;
+      border: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-dark:hover { background: var(--sage); transform: translateY(-2px); }
+    .btn-outline-dk {
+      background: transparent;
+      color: var(--ink);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 0.85rem 2rem;
+      border-radius: 100px;
+      text-decoration: none;
+      border: 1.5px solid rgba(28,43,30,0.25);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .btn-outline-dk:hover { border-color: var(--sage); transform: translateY(-2px); }
+    .scroll-arrow {
+      position: absolute;
+      bottom: 2.5rem; left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      animation: arrowBob 2.5s ease infinite;
+    }
+    @keyframes arrowBob {
+      0%,100%{transform:translateX(-50%) translateY(0);}
+      50%{transform:translateX(-50%) translateY(6px);}
+    }
+    .scroll-arrow svg { color: var(--muted); }
+    /* ══════════════════════════════════
+       SHARED
+    ══════════════════════════════════ */
+    .wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .section { padding: 6rem 0; }
+    .label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sage-lt);
+      margin-bottom: 0.7rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .label::before { content:''; width:18px; height:1px; background: var(--sage-lt); }
+    h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.1rem;
+    }
+    p {
+      font-size: 0.97rem;
+      line-height: 1.9;
+      color: var(--body);
+      margin-bottom: 1rem;
+    }
+    p:last-child { margin-bottom: 0; }
+    hr.thin { border: none; border-top: 1px solid var(--border); margin: 0; }
+    /* ══════════════════════════════════
+       ABOUT — single column, no art block
+    ══════════════════════════════════ */
+    .about-single {
+      max-width: 640px;
+    }
+    /* ══════════════════════════════════
+       INSPIRATION (dark section)
+    ══════════════════════════════════ */
+    .inspo-section {
+      background: var(--ink);
+      padding: 6rem 0;
+    }
+    .inspo-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .inspo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    @media (max-width: 768px) { .inspo-grid { grid-template-columns: 1fr; gap: 3rem; } }
+    .inspo-quote-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 8rem;
+      color: var(--sage-lt);
+      opacity: 0.35;
+      line-height: 0.7;
+      margin-bottom: -1rem;
+    }
+    .inspo-quote-text {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-style: italic;
+      font-weight: 400;
+      color: rgba(250,250,247,0.9);
+      line-height: 1.6;
+      margin-bottom: 1.4rem;
+    }
+    .inspo-attr {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(167,243,208,0.5);
+    }
+    .inspo-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .inspo-stat {
+      border-left: 2px solid var(--sage-lt);
+      padding-left: 1.5rem;
+    }
+    .inspo-stat-n {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 600;
+      color: #a7f3d0;
+      line-height: 1;
+      display: block;
+    }
+    .inspo-stat-l {
+      font-size: 0.82rem;
+      color: rgba(250,250,247,0.55);
+      margin-top: 0.3rem;
+      line-height: 1.5;
+    }
+    .ky-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 1.8rem;
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .ky-card-n {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #a7f3d0;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .ky-card p {
+      font-size: 0.83rem;
+      color: rgba(250,250,247,0.6);
+      line-height: 1.7;
+      margin: 0;
+    }
+    /* ══════════════════════════════════
+       FRAMEWORK
+    ══════════════════════════════════ */
+    .framework-section {
+      background: var(--foam);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 6rem 0;
+    }
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--border-dk);
+      border-radius: 18px;
+      overflow: hidden;
+      margin: 3rem 0 0;
+      background: var(--white);
+    }
+    @media (max-width: 768px) { .pipeline { grid-template-columns: 1fr; } }
+    .pipe-step {
+      padding: 2.4rem 2rem;
+      border-right: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    .pipe-step:last-child { border-right: none; }
+    .pipe-step:hover { background: var(--foam); }
+    .pipe-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4.5rem;
+      font-weight: 700;
+      color: var(--border-dk);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .pipe-step h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 0.6rem;
+    }
+    .pipe-step p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin: 0;
+    }
+    .pipe-formula {
+      font-family: 'Plus Jakarta Sans', monospace;
+      font-size: 0.7rem;
+      color: var(--sage);
+      background: var(--foam);
+      border: 1px solid var(--border-dk);
+      border-radius: 7px;
+      padding: 0.4rem 0.7rem;
+      margin-top: 0.85rem;
+      display: inline-block;
+    }
+    /* ══════════════════════════════════
+       VALIDATION
+    ══════════════════════════════════ */
+    .val-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    @media (max-width: 700px) { .val-split { grid-template-columns: 1fr; } }
+    .val-card {
+      border-radius: 20px;
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+    }
+    .val-card.green {
+      background: linear-gradient(145deg, #ecfdf5, #d1fae5);
+      border-color: #a7f3d0;
+    }
+    .val-card.sand { background: var(--sand); }
+    .val-card-icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
+    .val-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 0.6rem;
+    }
+    .val-card > p { font-size: 0.88rem; color: var(--body); margin-bottom: 1.4rem; }
+    .val-nums-row {
+      display: flex;
+      gap: 1.8rem;
+      margin-bottom: 1.6rem;
+      padding-bottom: 1.4rem;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+    }
+    .val-n { text-align: left; }
+    .val-n-big {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--sage);
+      line-height: 1;
+      display: block;
+    }
+    .val-n-sm { font-size: 0.68rem; color: var(--muted); }
+    .val-bullets { list-style: none; }
+    .val-bullets li {
+      font-size: 0.85rem;
+      color: var(--body);
+      padding: 0.45rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      display: flex; gap: 0.6rem; align-items: flex-start;
+      line-height: 1.6;
+    }
+    .val-bullets li:last-child { border-bottom: none; }
+    .val-bullets li::before {
+      content: '→';
+      color: var(--sage-lt);
+      flex-shrink: 0;
+      font-size: 0.68rem;
+      margin-top: 0.22rem;
+    }
+    /* ══════════════════════════════════
+       TECH
+    ══════════════════════════════════ */
+    .tech-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1.6rem;
+    }
+    .tech-chip {
+      background: var(--white);
+      border: 1px solid var(--border-dk);
+      border-radius: 100px;
+      padding: 0.55rem 1.2rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      transition: border-color 0.18s, transform 0.18s, background 0.18s;
+    }
+    .tech-chip:hover {
+      border-color: var(--sage-lt);
+      background: var(--foam);
+      transform: translateY(-2px);
+    }
+    .tech-chip-name { font-size: 0.82rem; font-weight: 600; color: var(--ink); }
+    .tech-chip-role { font-size: 0.62rem; color: var(--muted); }
+    /* ══════════════════════════════════
+       DEMO (dark)
+    ══════════════════════════════════ */
+    .demo-section {
+      background: var(--ink);
+      padding: 6rem 0;
+    }
+    .demo-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .demo-inner .label { color: rgba(167,243,208,0.5); }
+    .demo-inner .label::before { background: rgba(167,243,208,0.4); }
+    .demo-inner h2 { color: #fff; }
+    .demo-inner > p { color: rgba(250,250,247,0.5); font-size: 0.92rem; }
+    .video-frame {
+      margin-top: 2rem;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    }
+    .video-frame iframe { width:100%; height:100%; border:none; display:block; }
+    /* ══════════════════════════════════
+       FOOTER
+    ══════════════════════════════════ */
+    footer {
+      background: var(--ink);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .footer-wordmark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      font-style: italic;
+      color: rgba(250,250,247,0.3);
+      margin-bottom: 0.7rem;
+    }
+    footer p { font-size: 0.75rem; color: rgba(250,250,247,0.25); margin: 0; }
+    footer a { color: rgba(167,243,208,0.5); text-decoration: none; }
+    footer a:hover { color: #a7f3d0; }
+    /* ══════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════ */
+    @media (max-width: 600px) {
+      .wrap, .inspo-inner, .demo-inner { padding: 0 1.5rem; }
+      .section, .inspo-section, .framework-section, .demo-section { padding: 4rem 0; }
+      .pipe-step { border-right: none; border-bottom: 1px solid var(--border); }
+      .pipe-step:last-child { border-bottom: none; }
+      .hero h1 { font-size: clamp(4rem, 18vw, 8rem); }
+    }
+  </style>
+</head>
+<body>
+<div id="prog"></div>
+<a href="../../" class="back-to-showcase">&larr; Back to Showcase</a>
 
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-lines">
+    <svg viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax meet" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M-100,380 C200,340 400,380 700,350 C1000,320 1200,360 1540,330" stroke="#3d6b52" stroke-width="1.5" opacity="0.5"/>
+      <path d="M-100,360 C300,310 500,360 800,320 C1100,280 1300,320 1540,290" stroke="#3d6b52" stroke-width="1" opacity="0.4"/>
+      <path d="M-100,340 C150,295 450,340 750,305 C1050,270 1250,305 1540,275" stroke="#3d6b52" stroke-width="1" opacity="0.3"/>
+      <path d="M-100,320 C250,270 500,320 800,280 C1100,240 1300,280 1540,250" stroke="#5a8a6e" stroke-width="0.8" opacity="0.22"/>
+      <path d="M-100,300 C200,255 480,295 780,260 C1080,225 1280,260 1540,230" stroke="#5a8a6e" stroke-width="0.8" opacity="0.16"/>
+      <path d="M-100,280 C300,235 550,280 850,245 C1150,210 1300,245 1540,215" stroke="#5a8a6e" stroke-width="0.6" opacity="0.12"/>
+    </svg>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-district fade-up">
+      Congressional App Challenge &nbsp;·&nbsp; KY-02 &nbsp;·&nbsp; Louisville, KY
+    </div>
+    <h1 class="fade-up d1">
+      Water<em>Wise</em>
+    </h1>
+    <p class="hero-tagline fade-up d2">
+      Precision irrigation powered by physics, satellite data,<br>and a seven-day forecast — for $60 of hardware.
+    </p>
+    <div class="hero-actions fade-up d3">
+      <a href="#demo" class="btn-dark">Watch the demo</a>
+      <a href="#framework" class="btn-outline-dk">How it works</a>
+    </div>
+  </div>
+  <div class="scroll-arrow">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+  </div>
+</header>
+
+<hr class="thin">
+
+<!-- ══════════════════════════════════════
+     ABOUT — single column, green art block removed
+══════════════════════════════════════ -->
+<div class="wrap">
+  <div class="section">
+    <div class="about-single fade-up">
+      <div class="label">The builder</div>
+      <h2>Advika Rastogi</h2>
+      <p>I'm a junior at duPont Manual High School in Louisville, in the Mathematics, Science and Technology program. I'm drawn to problems where rigorous math produces something tangible and useful.</p>
+      <p>This project started with watching my grandfather farm in India. He knew his land with decades of accumulated intuition — when the soil was thirsty, when it could wait. I wanted to see if that kind of foresight could be built from satellite data and equations.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="thin">
+
+<!-- ══════════════════════════════════════
+     INSPIRATION (dark)
+══════════════════════════════════════ -->
+<div class="inspo-section">
+  <div class="inspo-inner">
+    <div class="inspo-grid">
+      <div class="fade-left">
+        <div class="inspo-quote-mark">&ldquo;</div>
+        <p class="inspo-quote-text">
+          My grandfather farmed the same land for decades. He never wasted a drop. I wanted to give every farmer that same intuition — backed by data that never sleeps.
+        </p>
+        <div class="inspo-attr">Advika Rastogi &nbsp;·&nbsp; on the origin of WaterWise</div>
+        <div class="ky-card fade-up d2">
+          <div class="ky-card-n">60%</div>
+          <p>of Kentucky was under severe drought in 2022 and 2023. The Green River Basin saw months at less than 40% of normal rainfall.</p>
+        </div>
+      </div>
+      <div class="inspo-stats fade-right d1">
+        <div class="inspo-stat">
+          <span class="inspo-stat-n">70%</span>
+          <div class="inspo-stat-l">of all freshwater withdrawals globally come from agriculture</div>
+        </div>
+        <div class="inspo-stat">
+          <span class="inspo-stat-n">2B+</span>
+          <div class="inspo-stat-l">people live in countries experiencing high water stress right now</div>
+        </div>
+        <div class="inspo-stat">
+          <span class="inspo-stat-n">$60</span>
+          <div class="inspo-stat-l">total hardware cost to deploy WaterWise on a real farm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     FRAMEWORK
+══════════════════════════════════════ -->
+<div class="framework-section" id="framework">
+  <div class="wrap">
+    <div class="label fade-up">The math</div>
+    <h2 class="fade-up d1">How WaterWise works</h2>
+    <p class="fade-up d2" style="max-width:580px; color:var(--muted);">Three components that connect. A neural network learns the physics. A stochastic layer handles what the neural network can't know. A controller uses both to plan a week ahead.</p>
+    <div class="pipeline fade-up d2">
+      <div class="pipe-step">
+        <div class="pipe-num">01</div>
+        <h3>Fourier Neural Operator</h3>
+        <p>Learns to solve the Richards equation from 9 years of NASA SMAP satellite data. Runs in milliseconds instead of hours.</p>
+        <div class="pipe-formula">∂θ/∂t = ∇·[K(θ)∇ψ] + S</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">02</div>
+        <h3>Stochastic Extension</h3>
+        <p>Adds a learned noise function and runs 500 Monte Carlo scenarios, producing calibrated uncertainty bounds for every forecast.</p>
+        <div class="pipe-formula">dθ = f dt + σ(x,θ) dW(t)</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">03</div>
+        <h3>Model Predictive Control</h3>
+        <p>Uses the probabilistic 7-day forecast to minimize water use while keeping soil moisture above the plant wilting point.</p>
+        <div class="pipe-formula">P(θ ≥ θ_crit) ≥ 0.95</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     VALIDATION
+══════════════════════════════════════ -->
+<div class="wrap">
+  <div class="section" id="validation">
+    <div class="label fade-up">Testing</div>
+    <h2 class="fade-up d1">Tested in the real world</h2>
+    <p class="fade-up d2" style="max-width:580px; color:var(--muted);">Two rounds of validation: a hands-on hardware experiment with real plants, and a global simulation across 50 agricultural sites on six continents.</p>
+    <div class="val-split">
+      <div class="val-card green fade-left d1">
+        <span class="val-card-icon">🌱</span>
+        <h3>Hardware Experiment</h3>
+        <p>Tomato plants, Arduino sensors, a 12V pump, and two months of side-by-side comparison between Neural MPC and traditional threshold irrigation.</p>
+        <div class="val-nums-row">
+          <div class="val-n"><span class="val-n-big">20</span><span class="val-n-sm">Plants</span></div>
+          <div class="val-n"><span class="val-n-big">60</span><span class="val-n-sm">Days</span></div>
+          <div class="val-n"><span class="val-n-big">33.4%</span><span class="val-n-sm">Less water</span></div>
+        </div>
+        <ul class="val-bullets">
+          <li>Statistically significant water reduction (t = 4.34, p = 0.049)</li>
+          <li>No difference in plant height or leaf count</li>
+          <li>Zero wilting events in the treatment group</li>
+        </ul>
+      </div>
+      <div class="val-card sand fade-right d2">
+        <span class="val-card-icon">🌍</span>
+        <h3>Global Simulation</h3>
+        <p>NASA SMAP satellite data across 50 agricultural sites, 100 Monte Carlo weather scenarios per site, six continents tested.</p>
+        <div class="val-nums-row">
+          <div class="val-n"><span class="val-n-big">50</span><span class="val-n-sm">Sites</span></div>
+          <div class="val-n"><span class="val-n-big">6</span><span class="val-n-sm">Continents</span></div>
+          <div class="val-n"><span class="val-n-big">24.6%</span><span class="val-n-sm">Avg savings</span></div>
+        </div>
+        <ul class="val-bullets">
+          <li>Positive savings at every site tested</li>
+          <li>Highest in Canterbury Plains, New Zealand at 36.3%</li>
+          <li>North America averaged 31.1%, Africa averaged 25.6%</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="thin">
+
+<!-- ══════════════════════════════════════
+     TECH
+══════════════════════════════════════ -->
+<div class="wrap">
+  <div class="section" id="tech">
+    <div class="label fade-up">Built with</div>
+    <h2 class="fade-up d1">Technology</h2>
+    <div class="tech-row">
+      <div class="tech-chip fade-up d1"><span class="tech-chip-name">Python</span><span class="tech-chip-role">Core ML</span></div>
+      <div class="tech-chip fade-up d1"><span class="tech-chip-name">PyTorch</span><span class="tech-chip-role">FNO / SDE</span></div>
+      <div class="tech-chip fade-up d2"><span class="tech-chip-name">CVXPY</span><span class="tech-chip-role">MPC Solver</span></div>
+      <div class="tech-chip fade-up d2"><span class="tech-chip-name">torchsde</span><span class="tech-chip-role">SDE Integration</span></div>
+      <div class="tech-chip fade-up d2"><span class="tech-chip-name">NASA SMAP</span><span class="tech-chip-role">Satellite Data</span></div>
+      <div class="tech-chip fade-up d3"><span class="tech-chip-name">Arduino</span><span class="tech-chip-role">Hardware / C++</span></div>
+      <div class="tech-chip fade-up d3"><span class="tech-chip-name">Java</span><span class="tech-chip-role">App Backend</span></div>
+      <div class="tech-chip fade-up d3"><span class="tech-chip-name">HDF5 / xarray</span><span class="tech-chip-role">Data Processing</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     DEMO (dark)
+══════════════════════════════════════ -->
+<div class="demo-section" id="demo">
+  <div class="demo-inner">
+    <div class="label fade-up">Demo</div>
+    <h2 class="fade-up d1">Watch WaterWise</h2>
+    <p class="fade-up d2">A walkthrough of the app, the hardware setup, and the system running live on real sensor data.</p>
+    <div class="video-frame fade-up d3">
+      <iframe
+        src="https://www.youtube.com/embed/pPRUIzA1NOU?rel=0&modestbranding=1"
+        title="WaterWise Demo"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-wordmark">WaterWise</div>
+  <p>Congressional App Challenge &nbsp;·&nbsp; KY-02 &nbsp;·&nbsp; <a href="../../">Back to Showcase</a></p>
+  <p style="margin-top:0.3rem;">Advika Rastogi &nbsp;·&nbsp; duPont Manual High School &nbsp;·&nbsp; Louisville, KY</p>
+</footer>
+
+<script src="../../assets/js/nav.js" data-root="../../"></script>
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up, .fade-left, .fade-right').forEach(el => io.observe(el));
+  const prog = document.getElementById('prog');
+  window.addEventListener('scroll', () => {
+    prog.style.width = Math.min(scrollY / (document.body.scrollHeight - innerHeight) * 100, 100) + '%';
+  }, { passive: true });
+</script>
+</body>
+</html>
